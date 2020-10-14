@@ -1,0 +1,85 @@
+# docker-compose -f docker-compose.scrapers-web.yml up scrapers-web
+# docker-compose -f docker-compose.scrapers-web.yml scale scrapers-web=3
+version: '2.1'
+
+networks:
+
+  minio:
+    external:
+      name: minio
+
+  kafka:
+    external:
+      name: kafka
+
+  postgres:
+    external:
+      name: postgres
+
+  chrome:
+    driver: bridge
+    name: chrome
+
+services:
+
+  scrapers-web:
+    # webrtc leak
+    # https://stackoverflow.com/questions/53017490/how-can-i-disable-webrtc-local-ip-leak-with-puppeteer
+    build: ./web
+    labels:
+      - "com.services.type=scraper"
+    environment:
+      BROWSER_ENDPOINT_WS: ws://chromebrowser:3000
+      CONCURRENCY: 3
+      DOWNLOAD_TIMEOUT: 30
+
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      KAFKA_PRODUCER_TOPIC: scrapers.web
+      KAFKA_CONSUMER_TOPIC: urls.web
+      KAFKA_CONSUMER_GROUP_ID: scrapers.web
+
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: scraped
+      DB_USER: scraper
+      DB_PASS: default
+      DB_SERVICE_NAME: scrapers_web
+
+      MINIO_URL: http://minio:9000
+      MINIO_SERVER_ACCESS_KEY: MINIO_ACCESS_KEY
+      MINIO_SERVER_SECRET_KEY: MINIO_SECRET_KEY
+      MINIO_BUCKET_NAME: scrapped.web
+      MINIO_BUCKET_NAME_SCREENSHOTS: scrapped.web.screenshots
+    entrypoint: ["entrypoint.sh"]
+    command: bash -c "npm run build && node build/index.js"
+    volumes:
+      - ./web:/usr/app/
+    networks:
+      - chrome
+      - kafka
+      - minio
+      - postgres
+    restart: on-failure
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "30m"
+
+  chromebrowser:
+    image: browserless/chrome:latest
+    environment:
+      # documentation
+      # https://docs.browserless.io/docs/docker.html
+      MAX_CONCURRENT_SESSIONS: 6
+      CONNECTION_TIMEOUT: 360000    # 360 seconds
+      PREBOOT_CHROME: "true"
+    ports:
+      - 127.0.0.1:3000:3000
+    networks:
+      - chrome
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "30m"
