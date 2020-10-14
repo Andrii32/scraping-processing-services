@@ -1,0 +1,30 @@
+# docker-compose -f docker-compose.postgres.yml up
+version: '2.1'
+
+networks:
+
+  postgres:
+    driver: bridge
+    name: postgres
+
+services:
+
+  postgres:
+    image: postgres:12.2
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: var/lib/postgresql/data/pgdata
+    command: postgres
+    volumes:
+      - ./infrastructure/postgres/entrypoints/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - 127.0.0.1:5432:5432
+    restart: always
+    networks:
+      - postgres
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "30m"

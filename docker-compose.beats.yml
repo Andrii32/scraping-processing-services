@@ -1,0 +1,80 @@
+# docker-compose -f docker-compose.beats.yml up
+version: '2.1'
+
+networks:
+
+  elk:
+    external:
+      name: elk
+
+  kafka:
+    external:
+      name: kafka
+
+  postgres:
+    external:
+      name: postgres
+
+services:
+
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:7.9.2
+    user: root
+    volumes:
+      - ./infrastructure/elk/metricbeat/kibana-custom/kibana:/usr/share/metricbeat/kibana/custom/
+      - ./infrastructure/elk/metricbeat/config/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /proc:/hostfs/proc:ro
+      - /:/hostfs:ro
+    # to manually load dashboards set setup.dashboards.enabled: false
+    # and run this container with
+    # command: setup --dashboards
+    command: --strict.perms=false -e
+    networks:
+      - elk
+      - kafka
+      - postgres
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "30m"
+
+  packetbeat:
+    image: docker.elastic.co/beats/packetbeat:7.9.2
+    # Packetbeat needs some elevated privileges to capture network traffic.
+    # We'll grant them with POSIX capabilities.
+    cap_add: ['NET_RAW', 'NET_ADMIN']
+    # Use "host mode" networking to allow Packetbeat to capture traffic from
+    # the real network interface on the host, rather than being isolated to the
+    # container's virtual interface.
+    network_mode: host
+    # to manually load dashboards set setup.dashboards.enabled: false
+    # and run this container with
+    # command: setup --dashboards
+    volumes:
+      - ./infrastructure/elk/packetbeat/kibana-custom/kibana:/usr/share/packetbeat/kibana/custom/
+      - ./infrastructure/elk/packetbeat/config/packetbeat.yml:/usr/share/packetbeat/packetbeat.yml:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "30m"
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.9.2
+    user: root
+    volumes:
+      - ./infrastructure/elk/filebeat/kibana-custom/kibana:/usr/share/filebeat/kibana/custom/
+      - ./infrastructure/elk/filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: --strict.perms=false -e
+    networks:
+      - elk
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "30m"

@@ -1,0 +1,251 @@
+{
+  "objects": [
+    {
+      "attributes": {
+        "description": "",
+        "hits": 0,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"filter\":[{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"key\":\"docker.container.labels.com_services_type\",\"negate\":false,\"params\":{\"query\":\"scraper\"},\"type\":\"phrase\",\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index\"},\"query\":{\"match_phrase\":{\"docker.container.labels.com_services_type\":\"scraper\"}}}]}"
+        },
+        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
+        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":18,\"i\":\"1a45105f-d5b5-45b5-8c06-68b7c500832a\",\"w\":15,\"x\":0,\"y\":0},\"panelIndex\":\"1a45105f-d5b5-45b5-8c06-68b7c500832a\",\"version\":\"7.9.2\",\"panelRefName\":\"panel_0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":18,\"i\":\"27f62ffe-8a15-4a7e-b497-e9ddc4359590\",\"w\":15,\"x\":15,\"y\":0},\"panelIndex\":\"27f62ffe-8a15-4a7e-b497-e9ddc4359590\",\"version\":\"7.9.2\",\"panelRefName\":\"panel_1\"},{\"embeddableConfig\":{\"table\":null,\"vis\":{\"colors\":{\"error\":\"#BF1B00\",\"info\":\"#629E51\"}}},\"gridData\":{\"h\":18,\"i\":\"dfeaf859-e475-4d4a-8e1e-1328d47b812f\",\"w\":18,\"x\":30,\"y\":0},\"panelIndex\":\"dfeaf859-e475-4d4a-8e1e-1328d47b812f\",\"version\":\"7.9.2\",\"panelRefName\":\"panel_2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":16,\"i\":\"91b5dc31-659b-4bff-9efc-17f2a2083fae\",\"w\":48,\"x\":0,\"y\":18},\"panelIndex\":\"91b5dc31-659b-4bff-9efc-17f2a2083fae\",\"version\":\"7.9.2\",\"panelRefName\":\"panel_3\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"1a0459dd-9f6c-437c-a9a9-c579ee2cc242\",\"w\":48,\"x\":0,\"y\":34},\"panelIndex\":\"1a0459dd-9f6c-437c-a9a9-c579ee2cc242\",\"version\":\"7.9.2\",\"panelRefName\":\"panel_4\"}]",
+        "timeRestore": false,
+        "title": "SCRAPERS",
+        "version": 1
+      },
+      "id": "4580bc70-0e1c-11eb-b340-5b5a755d02d8",
+      "migrationVersion": {
+        "dashboard": "7.3.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "filebeat-*",
+          "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
+          "type": "index-pattern"
+        },
+        {
+          "id": "82704b90-0e1d-11eb-b340-5b5a755d02d8",
+          "name": "panel_0",
+          "type": "visualization"
+        },
+        {
+          "id": "fc1f1cf0-0e1d-11eb-b340-5b5a755d02d8",
+          "name": "panel_1",
+          "type": "visualization"
+        },
+        {
+          "id": "46fd6a00-0e1f-11eb-b340-5b5a755d02d8",
+          "name": "panel_2",
+          "type": "visualization"
+        },
+        {
+          "id": "734547a0-0e1e-11eb-b340-5b5a755d02d8",
+          "name": "panel_3",
+          "type": "search"
+        },
+        {
+          "id": "6c5b5060-0e23-11eb-b340-5b5a755d02d8",
+          "name": "panel_4",
+          "type": "search"
+        }
+      ],
+      "type": "dashboard",
+      "updated_at": "2020-10-14T13:47:16.650Z",
+      "version": "WzExNzAsMV0="
+    },
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "title": "[SERVICES] SERVICES FORM",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"title\":\"[SERVICES] SERVICES FORM\",\"type\":\"input_control_vis\",\"aggs\":[],\"params\":{\"controls\":[{\"id\":\"1602680305908\",\"fieldName\":\"docker.container.labels.com_services_type\",\"parent\":\"\",\"label\":\"SERVICE TYPE\",\"type\":\"list\",\"options\":{\"type\":\"terms\",\"multiselect\":true,\"dynamicOptions\":true,\"size\":5,\"order\":\"desc\"},\"indexPatternRefName\":\"control_0_index_pattern\"},{\"id\":\"1602680392682\",\"fieldName\":\"container.labels.com_docker_compose_service\",\"parent\":\"1602680305908\",\"label\":\"CONTAINER NAME\",\"type\":\"list\",\"options\":{\"type\":\"terms\",\"multiselect\":true,\"dynamicOptions\":true,\"size\":5,\"order\":\"desc\"},\"indexPatternRefName\":\"control_1_index_pattern\"},{\"id\":\"1602680433427\",\"fieldName\":\"container.labels.com_docker_compose_container-number\",\"parent\":\"1602680392682\",\"label\":\"CONTAINER NUMBER\",\"type\":\"list\",\"options\":{\"type\":\"terms\",\"multiselect\":true,\"dynamicOptions\":true,\"size\":5,\"order\":\"desc\"},\"indexPatternRefName\":\"control_2_index_pattern\"},{\"id\":\"1602680521621\",\"fieldName\":\"msg.metadata.worker_id\",\"parent\":\"\",\"label\":\"WORKER ID\",\"type\":\"list\",\"options\":{\"type\":\"terms\",\"multiselect\":true,\"dynamicOptions\":true,\"size\":5,\"order\":\"desc\"},\"indexPatternRefName\":\"control_3_index_pattern\"}],\"updateFiltersOnChange\":false,\"useTimeFilter\":false,\"pinFilters\":false}}"
+      },
+      "id": "82704b90-0e1d-11eb-b340-5b5a755d02d8",
+      "migrationVersion": {
+        "visualization": "7.8.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "filebeat-*",
+          "name": "control_0_index_pattern",
+          "type": "index-pattern"
+        },
+        {
+          "id": "filebeat-*",
+          "name": "control_1_index_pattern",
+          "type": "index-pattern"
+        },
+        {
+          "id": "filebeat-*",
+          "name": "control_2_index_pattern",
+          "type": "index-pattern"
+        },
+        {
+          "id": "filebeat-*",
+          "name": "control_3_index_pattern",
+          "type": "index-pattern"
+        }
+      ],
+      "type": "visualization",
+      "updated_at": "2020-10-14T13:02:27.017Z",
+      "version": "WzM4MiwxXQ=="
+    },
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "title": "[SERVICES] INPUT MESSAGES FORM",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"title\":\"[SERVICES] INPUT MESSAGES FORM\",\"type\":\"input_control_vis\",\"aggs\":[],\"params\":{\"controls\":[{\"id\":\"1602680643861\",\"fieldName\":\"msg.metadata.input_message.id\",\"parent\":\"\",\"label\":\"INPUT MESSAGE ID\",\"type\":\"list\",\"options\":{\"type\":\"terms\",\"multiselect\":true,\"dynamicOptions\":true,\"size\":5,\"order\":\"desc\"},\"indexPatternRefName\":\"control_0_index_pattern\"},{\"id\":\"1602680673658\",\"fieldName\":\"msg.metadata.input_message.hostId\",\"parent\":\"\",\"label\":\"INPUT MESSAGE HOST ID\",\"type\":\"list\",\"options\":{\"type\":\"terms\",\"multiselect\":true,\"dynamicOptions\":true,\"size\":5,\"order\":\"desc\"},\"indexPatternRefName\":\"control_1_index_pattern\"},{\"id\":\"1602680701179\",\"fieldName\":\"msg.metadata.input_message.url\",\"parent\":\"\",\"label\":\"INPUT MESSAGE URL\",\"type\":\"list\",\"options\":{\"type\":\"terms\",\"multiselect\":true,\"dynamicOptions\":true,\"size\":5,\"order\":\"desc\"},\"indexPatternRefName\":\"control_2_index_pattern\"}],\"updateFiltersOnChange\":false,\"useTimeFilter\":false,\"pinFilters\":false}}"
+      },
+      "id": "fc1f1cf0-0e1d-11eb-b340-5b5a755d02d8",
+      "migrationVersion": {
+        "visualization": "7.8.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "filebeat-*",
+          "name": "control_0_index_pattern",
+          "type": "index-pattern"
+        },
+        {
+          "id": "filebeat-*",
+          "name": "control_1_index_pattern",
+          "type": "index-pattern"
+        },
+        {
+          "id": "filebeat-*",
+          "name": "control_2_index_pattern",
+          "type": "index-pattern"
+        }
+      ],
+      "type": "visualization",
+      "updated_at": "2020-10-14T13:06:11.792Z",
+      "version": "WzQ0NywxXQ=="
+    },
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[],\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"
+        },
+        "title": "[SERVICES] LOG LEVELS",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"title\":\"[SERVICES] LOG LEVELS\",\"type\":\"pie\",\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"params\":{},\"schema\":\"metric\"},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"msg.level\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":20,\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\"},\"schema\":\"segment\"}],\"params\":{\"type\":\"pie\",\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":true,\"labels\":{\"show\":false,\"values\":true,\"last_level\":true,\"truncate\":100}}}"
+      },
+      "id": "46fd6a00-0e1f-11eb-b340-5b5a755d02d8",
+      "migrationVersion": {
+        "visualization": "7.8.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "filebeat-*",
+          "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
+          "type": "index-pattern"
+        }
+      ],
+      "type": "visualization",
+      "updated_at": "2020-10-14T13:19:23.162Z",
+      "version": "Wzc5MCwxXQ=="
+    },
+    {
+      "attributes": {
+        "columns": [
+          "container.labels.com_docker_compose_service",
+          "msg.message",
+          "msg.metadata.input_message.hostId",
+          "msg.metadata.input_message.id",
+          "msg.metadata.input_message.url"
+        ],
+        "description": "",
+        "hits": 0,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"highlightAll\":true,\"version\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"filter\":[],\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"
+        },
+        "sort": [],
+        "title": "[SERVCIES] INPUT MESSAGES",
+        "version": 1
+      },
+      "id": "734547a0-0e1e-11eb-b340-5b5a755d02d8",
+      "migrationVersion": {
+        "search": "7.4.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "filebeat-*",
+          "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
+          "type": "index-pattern"
+        }
+      ],
+      "type": "search",
+      "updated_at": "2020-10-14T13:12:16.109Z",
+      "version": "WzYwMCwxXQ=="
+    },
+    {
+      "attributes": {
+        "columns": [
+          "container.labels.com_docker_compose_service",
+          "msg.metadata.failure.failure_name",
+          "msg.metadata.failure.failure_description",
+          "msg.metadata.failure.message_topic",
+          "msg.metadata.failure.message_partition",
+          "msg.metadata.failure.message_offset"
+        ],
+        "description": "",
+        "hits": 0,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"highlightAll\":true,\"version\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"filter\":[{\"meta\":{\"alias\":null,\"negate\":false,\"disabled\":false,\"type\":\"phrase\",\"key\":\"msg.message\",\"params\":{\"query\":\"failure\"},\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index\"},\"query\":{\"match_phrase\":{\"msg.message\":\"failure\"}},\"$state\":{\"store\":\"appState\"}}],\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"
+        },
+        "sort": [],
+        "title": "[SERVICES] FAILURES",
+        "version": 1
+      },
+      "id": "6c5b5060-0e23-11eb-b340-5b5a755d02d8",
+      "migrationVersion": {
+        "search": "7.4.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "filebeat-*",
+          "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
+          "type": "index-pattern"
+        },
+        {
+          "id": "filebeat-*",
+          "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
+          "type": "index-pattern"
+        }
+      ],
+      "type": "search",
+      "updated_at": "2020-10-14T13:46:13.072Z",
+      "version": "WzExNDYsMV0="
+    }
+  ],
+  "version": "7.9.2"
+}

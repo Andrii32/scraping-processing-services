@@ -1,0 +1,25 @@
+PUT _template/scrapy
+{
+  "index_patterns": ["logstash.scrapers.scrapy.*"],
+  "version": 50001,
+  "settings": {
+    "index.refresh_interval": "5s"
+  },
+  "mappings": {
+      "properties": {
+        "extra": {
+          "properties": {
+            "status_name": {
+              "type" : "text",
+              "fields" : {
+                "keyword" : {
+                  "type" : "keyword",
+                  "ignore_above" : 256
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+}

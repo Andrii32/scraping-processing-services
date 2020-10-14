@@ -1,0 +1,86 @@
+# https://github.com/elastic/beats/blob/master/filebeat/filebeat.yml
+# https://gryzli.info/2019/02/15/advanced-filebeat-configuration/g
+
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      templates:
+
+        - condition.equals:
+            docker.container.labels.com.docker.compose.service: kafka
+          config:
+            - module: kafka
+              log:
+                input:
+                  type: container
+                  paths:
+                    - /var/lib/docker/containers/${data.docker.container.id}/*.log
+                    - /var/lib/docker/containers/${data.docker.container.id}*.log
+
+        - condition.equals:
+            docker.container.labels.com.docker.compose.service: postgres
+          config:
+            - module: postgres
+              log:
+                input:
+                  type: container
+                  paths:
+                    - /var/lib/docker/containers/${data.docker.container.id}/*.log
+                    - /var/lib/docker/containers/${data.docker.container.id}*.log
+
+        - condition.or:
+          - contains:
+              docker.container.labels.com.docker.compose.service: elasticsearch
+          - contains:
+              docker.container.labels.com.docker.compose.service: kibana
+          - contains:
+              docker.container.labels.com.docker.compose.service: metricbeat
+          - contains:
+              docker.container.labels.com.docker.compose.service: packetbeat
+          - contains:
+              docker.container.labels.com.docker.compose.service: filebeat
+          config:
+            - type: container
+              paths:
+                - /var/lib/docker/containers/${data.docker.container.id}/*.log
+                - /var/lib/docker/containers/${data.docker.container.id}*.log
+
+
+        - condition.equals:
+            docker.container.labels.com.docker.compose.service: scrapers-web
+          config:
+            - type: container
+              paths:
+                - /var/lib/docker/containers/${data.docker.container.id}/*.log
+                - /var/lib/docker/containers/${data.docker.container.id}*.log
+              processors:
+                # decode message into json, scraper-httpbin logs messages in json
+                - decode_json_fields:
+                    fields: ["message"]
+                    max_depth: 10
+                    target: "msg"
+                - drop_event:
+                    when.not:
+                      # drop item if not parsed
+                      has_fields: ["msg"]
+
+processors:
+  - add_docker_metadata:
+
+# have to be disabled to specify custom elasticsearch index names
+# https://github.com/elastic/beats/issues/11866
+setup.ilm.enabled: false
+
+setup.template.name: "filebeat"
+setup.template.pattern: "filebeat-*"
+setup.template.fields: "fields.yml"
+setup.template.overwrite: true
+setup.dashboards.enabled: true
+setup.dashboards.directory: "/usr/share/filebeat/kibana/custom/"
+
+setup.kibana:
+  host: "kibana:5601"
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+  index: "filebeat-%{[docker.container.labels.com_docker_compose_service]}-%{+yyyy.MM.dd}"

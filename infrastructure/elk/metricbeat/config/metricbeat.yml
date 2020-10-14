@@ -1,0 +1,78 @@
+# https://github.com/elastic/beats/blob/master/metricbeat/metricbeat.yml
+
+metricbeat.modules:
+
+  # https://www.elastic.co/guide/en/beats/metricbeat/master/metricbeat-module-system.html
+  - module: system
+    metricsets:
+      - cpu             # CPU usage
+      - load            # CPU load averages
+      - memory          # Memory usage
+      - network         # Network IO
+      - process         # Per process metrics
+      - process_summary # Process summary
+      - uptime          # System Uptime
+      - socket_summary  # Socket summary
+      - core            # Per CPU core usage
+      - diskio          # Disk IO
+      - filesystem      # File system usage for each mountpoint
+      - fsstat          # File system summary metrics
+      - raid            # Raid
+      - socket          # Sockets and connection info (linux only)
+    enabled: true
+    period: 10s
+    processes: ['.*']
+
+    # Configure the metric types that are included by these metricsets.
+    cpu.metrics:  ["percentages"]  # The other available options are normalized_percentages and ticks.
+    core.metrics: ["percentages"]  # The other available option is ticks.
+
+
+  # https://www.elastic.co/guide/en/beats/metricbeat/master/metricbeat-module-docker.html
+  - module: docker
+    metricsets:
+      - "container"
+      - "cpu"
+      - "diskio"
+      - "event"
+      - "healthcheck"
+      - "info"
+      - "image"
+      - "memory"
+      - "network"
+    hosts: ["unix:///var/run/docker.sock"]
+    period: 10s
+    enabled: true
+
+  # https://www.elastic.co/guide/en/beats/metricbeat/master/metricbeat-module-kafka.html
+  - module: kafka
+    metricsets:
+      - partition
+      - consumergroup
+    period: 10s
+    hosts: ["kafka:29092"]
+
+  # https://www.elastic.co/guide/en/beats/metricbeat/master/metricbeat-module-zookeeper.html
+  - module: zookeeper
+    enabled: true
+    metricsets: ["mntr", "server"]
+    period: 10s
+    hosts: ["zookeeper:2181"]
+
+  # https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-postgresql.html
+  - module: postgresql
+    enabled: true
+    metricsets: ["database", "bgwriter", "activity"]
+    period: 10s
+    hosts: ["postgresql://postgres:5432?sslmode=disable"]
+    username: postgres
+    password: postgres
+
+setup.dashboards.enabled: true
+setup.dashboards.directory: "/usr/share/metricbeat/kibana/custom/"
+
+setup.kibana:
+  host: "kibana:5601"
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]

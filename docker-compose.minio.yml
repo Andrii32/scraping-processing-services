@@ -1,0 +1,36 @@
+# docker-compose -f docker-compose.minio.yml up
+version: '2.1'
+
+networks:
+
+  minio:
+    name: minio
+    driver: bridge
+
+services:
+
+  minio:
+    image: minio/minio
+    environment:
+      MINIO_ACCESS_KEY: MINIO_ACCESS_KEY
+      MINIO_SECRET_KEY: MINIO_SECRET_KEY
+    command: server /data
+    volumes:
+      - ./infrastructure/minio/data:/data
+    ## multiple volumes setup:
+    #command: server /data1 /data2 /data3 /data4
+    #volumes:
+    #  - ./infrastructure/minio/data1:/data1
+    #  - ./infrastructure/minio/data2:/data2
+    #  - ./infrastructure/minio/data3:/data3
+    #  - ./infrastructure/minio/data4:/data4
+    ports:
+      - 127.0.0.1:9000:9000
+    restart: always
+    networks:
+      - minio
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "30m"

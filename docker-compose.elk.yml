@@ -1,0 +1,41 @@
+# docker-compose -f docker-compose.elk.yml up
+version: '2.1'
+
+networks:
+
+  elk:
+    name: elk
+    driver: bridge
+
+services:
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+    environment:
+      ES_JAVA_OPTS: "-Xmx2048m -Xms2048m"
+    ports:
+      - "127.0.0.1:9200:9200"
+      - "127.0.0.1:9300:9300"
+    volumes:
+      - ./infrastructure/elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    networks:
+      - elk
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "30m"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.9.2
+    ports:
+      - "127.0.0.1:5601:5601"
+    volumes:
+      - ./infrastructure/elk/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+    networks:
+      - elk
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "30m"

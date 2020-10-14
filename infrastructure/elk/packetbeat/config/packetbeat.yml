@@ -1,0 +1,44 @@
+# https://github.com/elastic/beats/blob/master/packetbeat/packetbeat.yml
+
+packetbeat.interfaces.device: any
+
+packetbeat.protocols:
+- type: icmp
+  # Enable ICMPv4 and ICMPv6 monitoring. Default: false
+  enabled: true
+
+- type: dhcpv4
+  # Configure the DHCP for IPv4 ports.
+  ports: [67, 68]
+
+- type: dns
+  # Configure the ports where to listen for DNS traffic. You can disable
+  # the DNS protocol by commenting out the list of ports.
+  ports: [53]
+
+- type: http
+  # Configure the ports where to listen for HTTP traffic. You can disable
+  # the HTTP protocol by commenting out the list of ports.
+  ports: [80, 8080, 8000, 5000, 8002]
+
+- type: tls
+  # Configure the ports where to listen for TLS traffic. You can disable
+  # the TLS protocol by commenting out the list of ports.
+  ports:
+    - 443   # HTTPS
+    - 993   # IMAPS
+    - 995   # POP3S
+    - 5223  # XMPP over SSL
+    - 8443
+    - 8883  # Secure MQTT
+    - 9243  # Elasticsearch
+
+
+setup.kibana:
+  host: "127.0.0.1:5601"
+
+setup.dashboards.enabled: true
+setup.dashboards.directory: "/usr/share/packetbeat/kibana/custom/"
+
+output.elasticsearch:
+  hosts: ["http://127.0.0.1:9200"]
