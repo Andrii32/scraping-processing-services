@@ -1,4 +1,4 @@
-import {Downloaded} from '../models/downloaded';
+import {Downloaded} from '../entities/downloaded';
 
 
 export interface DownloaderService {

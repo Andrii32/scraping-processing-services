@@ -1,6 +1,6 @@
 import * as kafka from 'node-rdkafka';
 
-import { KafkaConsumerConfig, KafkaProducerConfig } from '../../config/models';
+import { KafkaConsumerConfig, KafkaProducerConfig } from '../../config/entities';
 
 
 

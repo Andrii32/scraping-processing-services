@@ -1,6 +1,6 @@
 
-import {FileId} from '../models/fileId';
-import {Downloaded} from '../models/downloaded';
+import {FileId} from '../entities/fileId';
+import {Downloaded} from '../entities/downloaded';
 
 export interface FileRepository {
 

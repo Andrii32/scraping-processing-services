@@ -1,4 +1,4 @@
-import {MessageProcessingFailure} from '../models/messageProcessingFailure'
+import {MessageProcessingFailure} from '../entities/messageProcessingFailure'
 
 export interface FailureRepository {
 

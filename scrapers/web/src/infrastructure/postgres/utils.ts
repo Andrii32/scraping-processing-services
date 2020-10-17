@@ -1,7 +1,7 @@
 import * as pg from 'pg';
 
-import {Service} from '../../domain/models/service'
-import { PostgresConfig } from '../../config/models';
+import {Service} from '../../domain/entities/service'
+import { PostgresConfig } from '../../config/entities';
 
 
 export const getOrCreateService = async(client: pg.Client, service: Service): Promise<Service> => {

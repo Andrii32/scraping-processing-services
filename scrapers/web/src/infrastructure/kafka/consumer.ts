@@ -1,6 +1,6 @@
 import * as kafka from 'node-rdkafka';
 
-import {InputMessage} from '../../domain/models/messages/inp';
+import {InputMessage} from '../../domain/entities/messages/inp';
 import {MessageConsumerService, Consumed} from '../../domain/services/messageConsumer';
 import {CommitManager} from '../../infrastructure/kafka/commitManager';
 

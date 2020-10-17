@@ -3,8 +3,8 @@ import {Logger} from '../domain/services/logger';
 import {DownloaderService} from '../domain/services/downloaderService';
 import {FileRepository} from '../domain/repositories/fileRepository';
 import {MessageProducerService} from '../domain/services/messageProducer';
-import {InputMessage} from '../domain/models/messages/inp';
-import {OutputMessage} from '../domain/models/messages/out';
+import {InputMessage} from '../domain/entities/messages/inp';
+import {OutputMessage} from '../domain/entities/messages/out';
 
 
 export type Scrape = (inputMessage: InputMessage, logContext: object) => Promise<OutputMessage>

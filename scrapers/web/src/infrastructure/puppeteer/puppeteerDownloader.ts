@@ -2,7 +2,7 @@
 import * as puppeteer from 'puppeteer';
 import {DateTime} from 'luxon';
 
-import {Downloaded, Failure} from '../../domain/models/downloaded';
+import {Downloaded, Failure} from '../../domain/entities/downloaded';
 import {DownloaderService} from '../../domain/services/downloaderService';
 
 

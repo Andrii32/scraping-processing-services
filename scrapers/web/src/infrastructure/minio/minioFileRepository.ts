@@ -1,7 +1,7 @@
 import * as AWS from 'aws-sdk';
 
-import {FileId} from '../../domain/models/fileId';
-import {Downloaded} from '../../domain/models/downloaded';
+import {FileId} from '../../domain/entities/fileId';
+import {Downloaded} from '../../domain/entities/downloaded';
 import {FileRepository} from '../../domain/repositories/fileRepository';
 
 export class MinioFileRepository implements FileRepository{

@@ -1,6 +1,6 @@
 import * as AWS from 'aws-sdk';
 
-import {  MinIOConfig } from '../../config/models';
+import {  MinIOConfig } from '../../config/entities';
 
 
 export const createBucket = async(client: AWS.S3, bucket: string): Promise<AWS.S3.Types.CreateBucketOutput> => {

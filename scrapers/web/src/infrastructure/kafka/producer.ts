@@ -1,7 +1,7 @@
 import * as kafka from 'node-rdkafka';
 import * as murmur from 'murmurhash-js';
 
-import {OutputMessage} from '../../domain/models/messages/out'
+import {OutputMessage} from '../../domain/entities/messages/out'
 import {MessageProducerService} from '../../domain/services/messageProducer'
 
 

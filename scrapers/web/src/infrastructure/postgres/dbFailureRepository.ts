@@ -1,6 +1,6 @@
 import * as pg from 'pg';
 
-import {MessageProcessingFailure} from '../../domain/models/messageProcessingFailure'
+import {MessageProcessingFailure} from '../../domain/entities/messageProcessingFailure'
 import {FailureRepository} from '../../domain/repositories/failureRepository';
 
 

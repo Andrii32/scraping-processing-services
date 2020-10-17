@@ -1,4 +1,4 @@
-import {OutputMessage} from '../models/messages/out';
+import {OutputMessage} from '../entities/messages/out';
 
 
 export interface MessageProducerService {

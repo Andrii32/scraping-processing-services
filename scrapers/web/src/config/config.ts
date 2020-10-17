@@ -1,6 +1,6 @@
 import * as env from 'env-var';
 
-import * as config from './models';
+import * as config from './entities';
 
 
 export const getConfig = (): config.Config => {

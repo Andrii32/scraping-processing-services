@@ -1,6 +1,6 @@
 import * as puppeteer from 'puppeteer';
 
-import { PuppeteerConfig } from '../../config/models';
+import { PuppeteerConfig } from '../../config/entities';
 
 
 export const puppeteerBrowserFromConfig = async(config: PuppeteerConfig): Promise<puppeteer.Browser> => {

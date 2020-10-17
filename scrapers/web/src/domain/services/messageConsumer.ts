@@ -1,4 +1,4 @@
-import {InputMessage} from '../models/messages/inp';
+import {InputMessage} from '../entities/messages/inp';
 
 
 export interface Consumed<T> {

@@ -4,11 +4,11 @@ import * as delay from 'delay';
 import { v4 as uuid } from 'uuid';
 
 import { getConfig } from './config/config';
-import { Config } from './config/models';
+import { Config } from './config/entities';
 
 import { Logger } from './domain/services/logger'
-import { Service } from './domain/models/service'
-import { MessageProcessingFailure } from './domain/models/messageProcessingFailure'
+import { Service } from './domain/entities/service'
+import { MessageProcessingFailure } from './domain/entities/messageProcessingFailure'
 import { FailureRepository} from './domain/repositories/failureRepository';
 import { MessageConsumerService, Consumed } from './domain/services/messageConsumer';
 import { FileRepository } from './domain/repositories/fileRepository';
