@@ -1,9 +1,9 @@
 
 import {FileId} from '../models/fileId';
+import {Downloaded} from '../models/downloaded';
 
 export interface FileRepository {
 
-    save(id: string, body: Buffer): Promise<FileId>;
+    save(downloaded: Downloaded): Promise<FileId>;
 
 }
-

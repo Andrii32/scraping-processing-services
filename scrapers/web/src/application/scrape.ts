@@ -38,7 +38,7 @@ export const makeScrape = (
                             failure:        downloaded.failure
                         }
                     })
-                    return fileRepository.save(message.id, Buffer.from(JSON.stringify(downloaded)))
+                    return fileRepository.save(downloaded)
                         .then(
                             fileId => {
                                 log.info('stored', { stored: { downloadedFile: fileId, screenshotFile: null } })
