@@ -1,6 +1,7 @@
 import * as pg from 'pg';
 
-import {FailureRepository, MessageProcessingFailure} from '../../domain/repositories/failureRepository';
+import {MessageProcessingFailure} from '../../domain/models/messageProcessingFailure'
+import {FailureRepository} from '../../domain/repositories/failureRepository';
 
 
 export class DbFailureRepository implements FailureRepository{
@@ -14,7 +15,8 @@ export class DbFailureRepository implements FailureRepository{
         return this.client.query(
             `
             INSERT INTO failures(
-                service,
+                id,
+                service_id,
                 failure_name,
                 failure_description,
                 message_failed_key,
@@ -23,17 +25,18 @@ export class DbFailureRepository implements FailureRepository{
                 message_partition,
                 message_offset,
                 created_at)
-            VALUES($1, $2, $3, $4, $5, $6, $7, $8, NOW())
+            VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW())
             `,
             [
-                failure.service.name,
-                failure.failure_name,
-                failure.failure_description,
-                failure.message_failed_key,
-                failure.message_failed_value,
-                failure.message_topic,
-                failure.message_partition,
-                failure.message_offset
+                failure.id,
+                failure.service.id,
+                failure.failureName,
+                failure.failureDescription,
+                failure.messageFailedKey,
+                failure.messageFailedValue,
+                failure.messageTopic,
+                failure.messagePartition,
+                failure.messageOffset
             ]
         )
         .then(() => { return failure })

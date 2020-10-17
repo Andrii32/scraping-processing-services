@@ -1,12 +1,15 @@
 import * as process from 'process';
 import * as kafka from 'node-rdkafka';
 import * as delay from 'delay';
+import { v4 as uuid } from 'uuid';
 
 import { getConfig } from './config/config';
 import { Config } from './config/models';
 
 import { Logger } from './domain/services/logger'
-import { FailureRepository, MessageProcessingFailure } from './domain/repositories/failureRepository';
+import { Service } from './domain/models/service'
+import { MessageProcessingFailure } from './domain/models/messageProcessingFailure'
+import { FailureRepository} from './domain/repositories/failureRepository';
 import { MessageConsumerService, Consumed } from './domain/services/messageConsumer';
 import { FileRepository } from './domain/repositories/fileRepository';
 import { MessageProducerService } from './domain/services/messageProducer';
@@ -20,14 +23,14 @@ import { KafkaMessageProducer } from './infrastructure/kafka/producer';
 import { CommitManager } from './infrastructure/kafka/commitManager';
 import { PuppeteerDownloaderService } from './infrastructure/puppeteer/puppeteerDownloader';
 import { minioClientFromConfig, initMinio } from './infrastructure/minio/utils';
-import { postgresClientFromConfig } from './infrastructure/postgres/utils';
+import { initPostgres, postgresClientFromConfig } from './infrastructure/postgres/utils';
 import { puppeteerBrowserFromConfig } from './infrastructure/puppeteer/utils';
 import { kafkaConsumerClientFromConfig, kafkaProducerClientFromConfig } from './infrastructure/kafka/utils';
 import { DbFailureRepository } from './infrastructure/postgres/dbFailureRepository';
 
 
-
 const worker = async(
+    service:            Service,
     worker_id:          number,
     messageConsumer:    MessageConsumerService<kafka.Message>,
     messageProducer:    MessageProducerService,
@@ -61,22 +64,24 @@ const worker = async(
             })
             .catch(error => {
                 const failure: MessageProcessingFailure = {
-                    service:              { name: config.serviceName },
-                    failure_name:         `${error.name}: ${error.message}`,
-                    failure_description:  error.stack,
-                    message_failed_key:   consumed.origin?.key.toString(),
-                    message_failed_value: consumed.origin?.value.toString(),
-                    message_topic:        consumed.origin.topic,
-                    message_partition:    consumed.origin.partition.toString(),
-                    message_offset:       consumed.origin.offset.toString()
+                    id:                  uuid(),
+                    service:             service,
+                    failureName:         `${error.name}: ${error.message}`,
+                    failureDescription:  error.stack,
+                    messageFailedKey:    consumed.origin?.key.toString(),
+                    messageFailedValue:  consumed.origin?.value.toString(),
+                    messageTopic:        consumed.origin.topic,
+                    messagePartition:    consumed.origin.partition.toString(),
+                    messageOffset:       consumed.origin.offset.toString()
                 }
                 log.info('failure', { failure: failure })
                 failureRepository.registerFailure(failure)
-                log.info('failure registered')
-                messageConsumer.done(consumed.origin)
-                log.info('done', {state: 'FAILURE'})
+                    .then(() => {
+                        log.info('failure registered')
+                        messageConsumer.done(consumed.origin)
+                        log.info('done', {state: 'FAILURE'})
+                    })
             })
-
     }
 }
 
@@ -89,10 +94,11 @@ const run = async() => {
         kafkaConsumerClientFromConfig(config.kafkaConsumerConfig),
         minioClientFromConfig(config.minIOConfig)
             .then(minio => initMinio(minio, config.minIOConfig)),
-        postgresClientFromConfig(config.postgresConfig),
+        postgresClientFromConfig(config.postgresConfig)
+            .then(postgres => initPostgres(postgres, {id: uuid(), name: config.serviceName})),
     ])
     .then(([
-        [producer, pMetadata], [consumer, cMetadata], minio, postgres
+        [producer, pMetadata], [consumer, cMetadata], minio, [postgres, service]
     ]) => {
         consumer.subscribe([config.kafkaConsumerConfig.topic])
         const commitManager = new CommitManager(consumer, logger)
@@ -122,7 +128,17 @@ const run = async() => {
 
         return Promise.all(
             [...Array(config.scraperConfig.concurrency).keys()]
-                .map(worker_id => worker(worker_id, messageConsumer, messageProducer, fileRepository, failureRepository, logger, config))
+                .map(worker_id => worker(
+                    service,
+                    worker_id,
+                    messageConsumer,
+                    messageProducer,
+                    fileRepository,
+                    failureRepository,
+                    logger,
+                    config
+                )
+            )
         )
     }).catch(error => {
         logger.error(error)
