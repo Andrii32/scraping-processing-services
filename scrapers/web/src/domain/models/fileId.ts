@@ -1,3 +1,4 @@
 export interface FileId {
-    id: string
+    bucket: string,
+    key:    string
 }

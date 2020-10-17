@@ -19,7 +19,7 @@ export class MinioFileRepository implements FileRepository{
                 if (err) {
                     reject(err)
                 }
-                resolve({id: data.Bucket + ':' + data.Key})
+                resolve({bucket: data.Bucket, key: data.Key})
             })
         })
     }
