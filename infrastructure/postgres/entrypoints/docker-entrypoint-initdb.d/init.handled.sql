@@ -14,16 +14,16 @@ SET ROLE handler;
 
 --------------SERVICES--------------
 CREATE TABLE services(
-    id                     SMALLSERIAL PRIMARY KEY,
-    name                   VARCHAR(255) NOT NULL UNIQUE
+    id                     UUID         NOT NULL PRIMARY KEY,
+    name                   TEXT         NOT NULL UNIQUE
 );
 CREATE INDEX IF NOT EXISTS services_name ON services USING btree (name);
 --------------SERVICES--------------
 
 --------------FAILURES--------------
 CREATE TABLE IF NOT EXISTS failures(
-    id                      BIGSERIAL PRIMARY KEY,
-    service_id              SMALLINT    NOT NULL REFERENCES services(id),
+    id                      UUID        NOT NULL PRIMARY KEY,
+    service_id              UUID        NOT NULL REFERENCES services(id),
     failure_name            TEXT        NOT NULL,
     failure_description     TEXT        NOT NULL,
     message_failed_key      BYTEA       NOT NULL,
